@@ -7,19 +7,32 @@ import com.AutoServix.AutoServix.Models.CustomerModel;
 import com.AutoServix.AutoServix.Repository.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthService {
 
     @Autowired
     private CustomerRepo customerRepo;
 
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private Jwtservice jwtservice;
 
     public AuthResponse register (RegisterRequest request) {
-        CustomerModel customer = new CustomerModel(null, request.getName() , request.getEmail(), request.getPassword());
+
+        String encodedpassword = passwordEncoder.encode(request.getPassword());
+
+        CustomerModel customer = new CustomerModel(
+                request.getName(),
+                request.getEmail(),
+                encodedpassword,
+                request.getModelNo(),
+                request.getBrand(),
+                request.getChassisNo()
+        );
         customerRepo.save(customer);
 
         String token = jwtservice.generateToken(request.getEmail());
@@ -30,7 +43,7 @@ public class AuthService {
         CustomerModel customer = customerRepo.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User Not Found"));
 
-        if (! passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), customer.getPassword())) {
             throw new RuntimeException("Invalid Password");
         }
 

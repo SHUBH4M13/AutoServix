@@ -1,5 +1,6 @@
 package com.AutoServix.AutoServix.Services;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,13 +19,29 @@ public class Jwtservice {
     private Long expiration;
 
     public String generateToken(String email){
-        return String.valueOf(Jwts.builder().
+        return Jwts.builder().
                 subject(email).
                 issuedAt(new Date()).
                 expiration(new Date(System.currentTimeMillis() + expiration)).
                 signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8))).
-                compact()
-        );
+                compact();
+    }
+
+    public String extractEmail(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String token, String email) {
+        Claims claims = extractAllClaims(token);
+        return claims.getSubject().equals(email) && claims.getExpiration().after(new Date());
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
 }

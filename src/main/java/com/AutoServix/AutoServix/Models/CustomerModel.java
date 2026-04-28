@@ -5,94 +5,77 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Customer")
+@Table(name = "customer")
 public class CustomerModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Customer_id;
+    private Integer id;
 
-    private String Name;
+    private String name;
 
     @Column(unique = true)
-    private String Email;
+    private String email;
 
-    public CustomerModel(Object customerId, String name, String email, String password) {
+    private String password;
+
+    private String role;
+
+    @Column(nullable = false)
+    private String modelNo;
+
+    @Column(nullable = false)
+    private String brand;
+
+    private LocalDateTime slot;
+
+    @Column(nullable = false)
+    private Integer chassisNo;
+
+    private Integer serviceCount;
+
+    public CustomerModel() {}
+
+    public CustomerModel(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = "USER";
+        this.modelNo = "UNKNOWN";
+        this.brand = "UNKNOWN";
+        this.chassisNo = 0;
+        this.serviceCount = 0;
     }
 
-    public String getModelNo() {
-        return ModelNo;
+    public CustomerModel(String name, String email, String password, String modelNo, String brand, Integer chassisNo) {
+        this(name, email, password);
+        this.modelNo = hasText(modelNo) ? modelNo : "UNKNOWN";
+        this.brand = hasText(brand) ? brand : "UNKNOWN";
+        this.chassisNo = chassisNo != null ? chassisNo : 0;
     }
 
-    public CustomerModel(Integer customer_id, String name, String email, String modelNo, String brand, LocalDateTime slot, Integer chassisNo, Integer serviceCount) {
-        Customer_id = customer_id;
-        Name = name;
-        Email = email;
-        ModelNo = modelNo;
-        Brand = brand;
-        this.slot = slot;
-        ChassisNo = chassisNo;
-        ServiceCount = serviceCount;
+    public Integer getId() {
+        return id;
     }
 
-    public void setModelNo(String modelNo) {
-        ModelNo = modelNo;
-    }
-
-    public Integer getCustomer_id() {
-        return Customer_id;
-    }
-
-    public void setCustomer_id(Integer customer_id) {
-        Customer_id = customer_id;
-    }
-
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String email) {
-        Email = email;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
-    public String getBrand() {
-        return Brand;
+    public String getEmail() {
+        return email;
     }
 
-    public void setBrand(String brand) {
-        Brand = brand;
-    }
-
-    public LocalDateTime getSlot() {
-        return slot;
-    }
-
-    public void setSlot(LocalDateTime slot) {
-        this.slot = slot;
-    }
-
-    public Integer getChassisNo() {
-        return ChassisNo;
-    }
-
-    public void setChassisNo(Integer chassisNo) {
-        ChassisNo = chassisNo;
-    }
-
-    public Integer getServiceCount() {
-        return ServiceCount;
-    }
-
-    public void setServiceCount(Integer serviceCount) {
-        ServiceCount = serviceCount;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -111,22 +94,47 @@ public class CustomerModel {
         this.role = role;
     }
 
-    @Column(nullable = false)
-    private String password;
+    public String getModelNo() {
+        return modelNo;
+    }
 
-    private String role;
+    public void setModelNo(String modelNo) {
+        this.modelNo = modelNo;
+    }
 
-    @Column(nullable = false)
-    private String ModelNo;
+    public String getBrand() {
+        return brand;
+    }
 
-    @Column(nullable = false)
-    private String Brand;
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-    private LocalDateTime slot;
+    public LocalDateTime getSlot() {
+        return slot;
+    }
 
-    @Column(nullable = false)
-    private Integer ChassisNo;
+    public void setSlot(LocalDateTime slot) {
+        this.slot = slot;
+    }
 
-    private Integer ServiceCount;
+    public Integer getChassisNo() {
+        return chassisNo;
+    }
 
+    public void setChassisNo(Integer chassisNo) {
+        this.chassisNo = chassisNo;
+    }
+
+    public Integer getServiceCount() {
+        return serviceCount;
+    }
+
+    public void setServiceCount(Integer serviceCount) {
+        this.serviceCount = serviceCount;
+    }
+
+    private boolean hasText(String value) {
+        return value != null && !value.trim().isEmpty();
+    }
 }

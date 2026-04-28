@@ -4,6 +4,7 @@ import com.AutoServix.AutoServix.DTO.AuthResponse;
 import com.AutoServix.AutoServix.DTO.LoginRequest;
 import com.AutoServix.AutoServix.DTO.RegisterRequest;
 import com.AutoServix.AutoServix.Services.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
+    @Autowired
     private AuthService authService;
 
     @PostMapping("/register")

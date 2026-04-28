@@ -2,28 +2,30 @@ package com.AutoServix.AutoServix.DTO;
 
 public class RegisterRequest {
 
-    private String Name;
+    private String name;
+    private String email;
+    private String password;
+    private String modelNo;
+    private String brand;
+    private Integer chassisNo;
 
-    public RegisterRequest(String email, String name, String password) {
-        Email = email;
-        Name = name;
-        this.password = password;
-    }
+    // REQUIRED
+    public RegisterRequest() {}
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
@@ -34,7 +36,27 @@ public class RegisterRequest {
         this.password = password;
     }
 
-    private String Email;
-    private String password;
+    public String getModelNo() {
+        return modelNo;
+    }
 
+    public void setModelNo(String modelNo) {
+        this.modelNo = modelNo;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public Integer getChassisNo() {
+        return chassisNo;
+    }
+
+    public void setChassisNo(Integer chassisNo) {
+        this.chassisNo = chassisNo;
+    }
 }
